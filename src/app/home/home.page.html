@@ -1,20 +1,114 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-header [translucent]="true"> <ion-toolbar> <ion-title>Application Géolocalisation</ion-title> </ion-toolbar> </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="location-container">
+
+```
+<!-- Titre -->
+<div class="page-heading">
+  <h1>Géolocalisation</h1>
+  <p>Obtenez votre position ou démarrez un suivi en temps réel.</p>
+</div>
+
+<!-- Boutons -->
+<div class="buttons-container">
+  <ion-button
+    expand="block"
+    (click)="obtenirPositionPonctuelle()">
+    <ion-icon name="location-outline" slot="start"></ion-icon>
+    Obtenir Position
+  </ion-button>
+
+  <ion-button
+    expand="block"
+    color="success"
+    (click)="demarrerSuivi()">
+    <ion-icon name="navigate-outline" slot="start"></ion-icon>
+    Démarrer Suivi
+  </ion-button>
+
+  <ion-button
+    expand="block"
+    color="danger"
+    (click)="arreterSuivi()">
+    <ion-icon name="stop-circle-outline" slot="start"></ion-icon>
+    Arrêter Suivi
+  </ion-button>
+</div>
+
+<!-- Chargement -->
+<div class="loading-container" *ngIf="isLoading">
+  <ion-spinner name="crescent"></ion-spinner>
+  <p>Recherche de votre position...</p>
+</div>
+
+<!-- Informations de position -->
+<ion-card *ngIf="position">
+  <ion-card-header>
+    <ion-card-title>
+      <ion-icon name="location-outline"></ion-icon>
+      Position actuelle
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="coordinate">
+      <span class="label">Latitude</span>
+      <span class="value">{{ position.latitude }}</span>
+    </div>
+
+    <div class="coordinate">
+      <span class="label">Longitude</span>
+      <span class="value">{{ position.longitude }}</span>
+    </div>
+
+    <div class="coordinate">
+      <span class="label">Altitude</span>
+      <span class="value">
+        {{ position.altitude !== null ? position.altitude + ' m' : 'Non disponible' }}
+      </span>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<!-- Informations du suivi -->
+<ion-card *ngIf="isTracking" class="tracking-card">
+  <ion-card-header>
+    <ion-card-title>
+      <ion-icon name="navigate-outline"></ion-icon>
+      Suivi en cours
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="tracking-info">
+      <div>
+        <span class="tracking-label">Positions reçues</span>
+        <strong>{{ positionCount }}</strong>
+      </div>
+
+      <div>
+        <span class="tracking-label">Durée</span>
+        <strong>{{ trackingDuration }} s</strong>
+      </div>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<!-- Message d'erreur -->
+<ion-card *ngIf="errorMessage" color="danger" class="error-card">
+  <ion-card-header>
+    <ion-card-title>
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      Erreur
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    {{ errorMessage }}
+  </ion-card-content>
+</ion-card>
+
   </div>
 </ion-content>
